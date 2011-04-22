@@ -1,9 +1,13 @@
 /**
  * Module dependencies.
  */
-var express = require('express');
+var express = require('express'),
+	app = module.exports = express.createServer(),
+	jade = require('jade'),
+	mongoose = require('mongoose'),
+	db,
+	Chat;
 
-var app = module.exports = express.createServer();
 
 // Configuration
 app.configure(function(){
@@ -13,6 +17,8 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
+  
+  app.set('db-uri', 'mongodb://localhost/nodechat');
 });
 
 app.configure('development', function(){
@@ -22,6 +28,10 @@ app.configure('development', function(){
 app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
+
+//get database reference
+db = mongoose.connect(app.set('db-uri'));	//here app.set means app.get
+app.Chat = Chat = require('./models.js').Chat(db);
 
 // Routes
 app.get('/', function(req, res){
