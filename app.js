@@ -18,14 +18,15 @@ app.configure(function(){
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
   
-  app.set('db-uri', 'mongodb://localhost/nodechat');
 });
 
 app.configure('development', function(){
+  app.set('db-uri', 'mongodb://localhost/nodechat');
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 });
 
 app.configure('production', function(){
+  app.set('db-uri', 'mongodb://localhost/nodechat');
   app.use(express.errorHandler()); 
 });
 
@@ -35,9 +36,22 @@ app.Chat = Chat = require('./models.js').Chat(db);
 
 // Routes
 app.get('/', function(req, res){
-  res.render('index', {
-    title: 'Express'
-  });
+  res.render('index');
+});
+
+app.get('/nodechat.json', function(req, res){
+	Chat.find({}, function(err, chats){
+		res.send(chats.map(function(chat){
+			return {whom: chat.whom, content: chat.content};
+		}));
+	});
+});
+
+app.post('/new', function(req, res){
+	var chat = new Chat(req.body);
+	chat.save(function(){
+		res.redirect('/');
+	});
 });
 
 // Only listen on $ node app.js

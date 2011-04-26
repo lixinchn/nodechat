@@ -15,7 +15,7 @@ Chat.pre('save', function(next){
 		this.whom = 'unknown';
 	}
 	next();
-}
+});
 
 
 mongoose.model('Chat', Chat);
