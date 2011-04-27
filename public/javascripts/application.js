@@ -108,7 +108,13 @@ $(function(){
 			//chatEntry.save();
 			if (model = chats.create(model)){
 				chats.add(model);
+				this.clear();
 			}
+		},
+
+		clear: function(){
+			var textarea = this.$('textarea');
+			textarea.val('');
 		}
 	});
 
