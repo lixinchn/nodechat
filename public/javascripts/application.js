@@ -44,7 +44,7 @@ $(function(){
 
 		initialize: function(){
 			_.bindAll(this, 'render');
-			this.model.bind('all', this.render);
+			chats.bind('all', this.render);
 		},
 
 		render: function(){
@@ -76,14 +76,14 @@ $(function(){
 
 		initialize: function(){
 			_.bindAll(this, 'render');
-			this.collection.bind('all', this.render);
+			chats.bind('all', this.render);
 			this.render();
 		},
 
 		render: function(){
 			$(this.el).html('');
-			for (var i = 0; i < this.collection.length; i++){
-				var model = this.collection.at(i);
+			for (var i = 0; i < chats.length; i++){
+				var model = chats.at(i);
 				model = {whom: model.whom, content: model.content};
 				var chatEntryView = new ChatEntryView({model: model});
 				$(this.el).append(chatEntryView.el);
@@ -104,8 +104,11 @@ $(function(){
 			var whom = $(this.el).find('input[name="whom"]').val(),
 				content = $(this.el).find('textarea').val(),
 				model = {whom: whom, content: content};
-			var chatEntry = new ChatEntry(model);
-			chatEntry.save();
+			//var chatEntry = new ChatEntry(model);
+			//chatEntry.save();
+			if (model = chats.create(model)){
+				chats.add(model);
+			}
 		}
 	});
 
@@ -113,11 +116,12 @@ $(function(){
 		el: $('#context'),
 
 		initialize: function(){
-			this.chats = new Chats();
-			this.chatList = new ChatList({collection: this.chats});
+			//this.chats = new Chats();
+			this.chatList = new ChatList();
 			this.chatForm = new ChatForm();
 		}
 	});
 
+	window.chats = chats = new Chats();
 	window.nodeChat = nodeChat = new NodeChat();
 });
