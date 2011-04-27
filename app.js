@@ -5,6 +5,8 @@ var express = require('express'),
 	app = module.exports = express.createServer(),
 	jade = require('jade'),
 	mongoose = require('mongoose'),
+	socket = require('socket.io').listen(app),
+	activeClients = 0,
 	db,
 	Chat;
 
@@ -50,9 +52,35 @@ app.get('/nodechat.json', function(req, res){
 app.post('/new', function(req, res){
 	var chat = new Chat(req.body);
 	chat.save(function(){
+		socket.broadcast({
+			event: 'refresh'
+		});
 		res.redirect('/');
 	});
 });
+
+
+//socket.io
+socket.on('connection', function(client){
+	activeClients++;
+	
+	client.on('disconnect', function(){
+		clientDisconnect(client);
+	});
+
+	socket.broadcast({
+		event: 'update',
+		activeClients: activeClients
+	});
+});
+
+function clientDisconnect(client){
+	activeClients--;
+	client.broadcast({
+		event: 'update',
+		activeClients: activeClients
+	});
+}
 
 // Only listen on $ node app.js
 if (!module.parent) {

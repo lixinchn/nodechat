@@ -1,4 +1,6 @@
 $(function(){
+	var chats, nodeChat, socket;
+
 	_.templateSettings = {
 		interpolate: /\{\{(.+?)\}\}/g
 	};
@@ -47,8 +49,8 @@ $(function(){
 			chats.bind('all', this.render);
 		},
 
-		render: function(){
-			$(this.el).html(this.model.number);
+		render: function(activeClients){
+			$(this.el).html(activeClients);
 		}
 	});
 
@@ -125,9 +127,28 @@ $(function(){
 			//this.chats = new Chats();
 			this.chatList = new ChatList();
 			this.chatForm = new ChatForm();
+			this.chatCountView = new ChatCountView();
 		}
 	});
 
-	window.chats = chats = new Chats();
-	window.nodeChat = nodeChat = new NodeChat();
+
+	//
+	//controllers
+	//
+	function init(){
+		socket = new io.Socket(null, {port: 3000});
+		socket.on('message', function(msg){
+			if (msg.event == 'refresh'){
+				chats.fetch();
+			}else if (msg.event == 'update'){
+				nodeChat.chatCountView.render(msg.activeClients);
+			}
+		});
+		socket.connect();
+		
+		window.chats = chats = new Chats();
+		window.nodeChat = nodeChat = new NodeChat();
+	}
+
+	init();
 });
