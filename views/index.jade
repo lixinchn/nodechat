@@ -4,17 +4,15 @@
   p
     | connected clients
     span#client_count 0
-  p
-    | Fun Chat Messages
-    ul#chat_list
+  ul#chat_list
 
 form(method='post', action='#')#chat_form
   p
-    label Name:
-      input(type='text', name='whom')
+    label.name Name:
+    input(type='text', name='whom')
   p
-    label Message:
-      textarea(name='content')
+    label.message Message:
+    textarea(name='content')
   input(type='submit', value='send')
 
 #footer

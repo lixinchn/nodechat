@@ -1,8 +1,83 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 a {
   color: #00B7FF;
+}
+
+#heading {
+	text-align: center;
+	margin: 0px;
+}
+
+#context {
+	text-align: center;
+}
+
+#context > p {
+	margin-top: 0px;
+	margin-bottom: 50px;
+	color: gray;
+}
+
+#chat_list li {
+	list-style-type: none;
+}
+
+li.chat_entry p.whom {
+	text-align: left;
+	font-style: italic;
+	font-weight: bold;
+}
+
+li.chat_entry {
+	border-style: solid;
+	border-left-width: 2px;
+	border-right-width: 2px;
+	border-top-width: 0px;
+	border-bottom-width: 2px;
+	border-color: #98bf21;
+	margin-bottom: 30px;
+}
+
+li.chat_entry p.content {
+	margin: 0px;
+	text-align: left;
+	margin-left: 30px;
+}
+
+form#chat_form {
+	text-align: center;
+	border-style: solid;
+	border-width: 2px;
+	border-color: red;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+	-moz-border-radius: 20px;
+}
+
+form#chat_form p label.name {
+	margin-left: 3px;
+	margin-right: 20px;
+}
+
+form#chat_form p input[name='whom'] {
+	width: 300px;
+	margin-left: 10px;
+}
+
+form#chat_form p textarea[name='content'] {
+	width: 300px;
+	height: 80px;
+	margin-left: 10px;
+}
+
+form#chat_form input[type='submit'] {
+	width: 120px;
+	margin-left: 260px;
 }

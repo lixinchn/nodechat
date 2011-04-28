@@ -46,7 +46,6 @@ $(function(){
 
 		initialize: function(){
 			_.bindAll(this, 'render');
-			chats.bind('all', this.render);
 		},
 
 		render: function(activeClients){
@@ -57,7 +56,7 @@ $(function(){
 	var ChatEntryView = Backbone.View.extend({
 		tagName: 'li', 
 
-		template: _.template("<li class='chat_entry'><p class='whom'>{{whom}}</p><p class='content'>{{content}}</p></li>"),
+		template: _.template("<li class='chat_entry'><p class='whom'>{{whom}}:</p><p class='content'>{{content}}</p></li>"),
 
 		initialize: function(){
 			_.bindAll(this, 'render');
@@ -140,7 +139,8 @@ $(function(){
 		socket.on('message', function(msg){
 			if (msg.event == 'refresh'){
 				chats.fetch();
-			}else if (msg.event == 'update'){
+			}else if (msg.event == 'update' && typeof msg.activeClients === 'number'){
+				console.log(msg.activeClients);
 				nodeChat.chatCountView.render(msg.activeClients);
 			}
 		});
